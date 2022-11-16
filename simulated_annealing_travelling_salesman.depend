@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1668607454 source:/home/iconoyuri/Code/c++_workspace/simulated_annealing_travelling_salesman/main.cpp
+	<iostream>
+	<cstdlib>
+	<cmath>
+	<list>
+
