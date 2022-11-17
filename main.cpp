@@ -9,6 +9,7 @@
 
 using namespace std;
 
+struct neighbouring
 
 class Point{
 public:
@@ -54,7 +55,7 @@ public:
             points[i] = p;
         }
         sort(points,points + 100, PointComparator());
-        displayPoints();
+//        displayPoints();
     }
 
     void displayPoints(){
@@ -84,21 +85,40 @@ public:
 class Simulator{
 public:
     float Temperature;
+    PointsList pList;
 
-    Simulator(float tmp){
+    Simulator(float tmp, PointsList p){
+        pList = p;
         Temperature = tmp;
     }
 
+    // Fonction de permutation de deux éléments aléatoirement choisis dans un espacé donné
+    void neighbouringSwap(int _begin, int _end){
+        int source = (int) (rand() % (_end - _begin)) + _end;
+        int dest = (int) (rand() % (_end - _begin)) + _end;
 
-    int Simulated_annealing(list<Point> points){
+        Point cache = pList.get(dest);
+        pList.set(dest, pList.get(source));
+        pList.set(source, cache);
+    }
+
+    int getCost(){
+        return pList.computeCost();
+    }
+
+    int Simulated_annealing(){
+        neighbouringSwap(1, 10);
+        return 1;
     }
 };
 
 
 
 int main() {
+    float temp = 400.0;
     srand((unsigned) time(NULL));
     PointsList li = PointsList();
-//    li.displayPoints();
-    cout << li.computeCost();
+    Simulator simulator = Simulator(temp, li);
+
+    return 0;
 }
