@@ -98,30 +98,9 @@ public:
     int nbNeighbourhood;  // Nombre de voisinnages de points utilisées
     list<Neighbourhood> neighbourhoods;  // Ensemble des voisinnages de points
 
+    // On initialise le constructeur en lui passant la liste des points qui aura été générée en amont
     Simulator( PointsList p){
         pList = p;
-    }
-
-    // Fonction de permutation de deux éléments aléatoirement choisis dans un espacé donné
-    void neighbouringSwap(Neighbourhood nbh){
-        int dif = nbh._end - nbh._start;
-        int vrand = (int) rand() % (dif);
-        int source = vrand + nbh._start;
-        vrand = (int) rand() % (dif);
-        int dest = vrand + nbh._start;
-
-        Point cache = pList.get(dest);
-        pList.set(dest, pList.get(source));
-        pList.set(source, cache);
-    }
-
-    Neighbourhood getRandomNeighbourhood(){
-        int randomIndex = (int) rand() % nbNeighbourhood ;
-        int i = 0;
-        for (Neighbourhood nbh : neighbourhoods){
-            if (i == randomIndex) return nbh;
-            i++;
-        }
     }
 
     // Géneration des voisinnages
@@ -135,6 +114,30 @@ public:
             nb++;
         }
         nbNeighbourhood = nb;
+    }
+
+    // Fonction permettant de recevoir un voisinage aléatoire parmi ceux qui ont été crée avec la fonction generateNeighbourhoods
+    Neighbourhood getRandomNeighbourhood(){
+        int randomIndex = (int) rand() % nbNeighbourhood ;
+        int i = 0;
+        for (Neighbourhood nbh : neighbourhoods){
+            if (i == randomIndex) return nbh;
+            i++;
+        }
+    }
+
+    // Fonction de permutation de deux éléments aléatoirement choisis dans l'espace de points
+    void neighbouringSwap(Neighbourhood nbh){
+        // Détermination de la position des points du voisinnage nbh à permuter
+        int dif = nbh._end - nbh._start;
+        int vrand = (int) rand() % (dif);
+        int source = vrand + nbh._start;
+        vrand = (int) rand() % (dif);
+        int dest = vrand + nbh._start;
+
+        Point cache = pList.get(dest);
+        pList.set(dest, pList.get(source));
+        pList.set(source, cache);
     }
 
     int getCost(){
