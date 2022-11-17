@@ -19,17 +19,18 @@ public:
     int y;
     int rootdist;
 
+//    Génération aléatoire des coordonnées des points (entre 0 et 99)
     void randGen(int pointsNumber){
         x = (int) (rand() % pointsNumber);
         y = (int) (rand() % pointsNumber);
         rootdist = (int) sqrt(x*x + y*y);
     }
-
+//    Calcul de la distance entre l'instance courante de la classe et un autre point pris en paramètre
     int distP(Point pB){
         int reslt = (int) sqrt(pow((pB.x - x),2) + pow((pB.y - y),2));
         return reslt;
     }
-
+//    Affichage des coordonnées d'un point
     void displayPoint(){
         printf("(%d, %d) ", x, y);
     }
@@ -139,8 +140,10 @@ public:
         while( temperature > 0.1 ){
             Neighbourhood nbh = getRandomNeighbourhood();
             neighbouringSwap(nbh);
+
             cout << "current permutation" << endl;
             pList.displayPath();
+
             int tester = getCost();
             if (tester < optValue) optValue = tester;
             temperature *= 0.9;
