@@ -173,13 +173,19 @@ public:
 
 
 int main() {
-    float temp = 40.0;
     srand((unsigned) time(NULL));
-    PointsList li = PointsList();
+
+
+    float temp = 40.0; // définition de la température
+    PointsList li = PointsList(); // cration aléatoire de la première configuration
+
     cout << "Initial cost " << li.computeCost() << endl;
-    Simulator simulator = Simulator(li);
+
+    Simulator simulator = Simulator(li); // L'objet simulator lance l'implementation de l'algorithme
+
     cout << "Initial path " << endl;
     simulator.pList.displayPath();
+
     printf("\n \nRésultat optimisé : %d\n", simulator.Simulated_annealing(temp));
     simulator.displayResult();
 
