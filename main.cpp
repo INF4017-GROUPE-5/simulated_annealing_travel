@@ -5,7 +5,15 @@
 #include <list>
 //#include <iterator>
 
+#include <bits/stdc++.h>
+
 using namespace std;
+
+struct sPoint{
+    int x;
+    int y;
+    int rootdist;
+};
 
 class Point{
 public:
@@ -13,14 +21,18 @@ public:
     int y;
     int rootdist;
 
-    void randGen(){
-        x = rand() % 101;
-        y = rand() % 101;
+    void randGen(int pointsNumber){
+        x = (int) (rand() % pointsNumber);
+        y = (int) (rand() % pointsNumber);
         rootdist = (int) sqrt(x*x + y*y);
+//        x = 1;
+//        y = 2;
+//        rootdist = (int) sqrt(x*x + y*y);
     }
 
     int distP(Point pB){
-        return (int) sqrt(pow((pB.x - x),2) + pow((pB.y - y),2));
+        int reslt = (int) sqrt(pow((pB.x - x),2) + pow((pB.y - y),2));
+        return reslt;
     }
 
     void displayPoint(){
@@ -36,28 +48,46 @@ struct PointComparator{
 };
 
 class PointsList{
-public:
     list<Point> pointsList;
-    Point* points;
+//    Point* points;
+    Point points[100];
+    int pointsNumber = 100;
+
+public:
 
     PointsList(int pointsNumber){
-        Point p[pointsNumber];
-        for (int i = 0; i < pointsNumber; i++){
-            Point p;
-            p.randGen();
-            pointsList.push_back(p);
-        }
-        pointsList.sort(PointComparator());
+//        this->pointsNumber = pointsNumber;
+//        Point pointsTable[pointsNumber];
+
+//        for (int i = 0; i < pointsNumber; i++){
+//            Point p;
+//            p.randGen(pointsNumber);
+//            pointsList.push_back(p);
+//        }
+//        pointsList.sort(PointComparator());
+
 
         for (int i = 0; i < pointsNumber; i++){
-            p[i] = listGet(i);
+            Point p;
+            p.randGen(pointsNumber);
+            points[i] = p;
+//            points[i] = listGet(i);
         }
-        points = p;
+        sort(points,points + 100, PointComparator());
+        displayPoints();
+//        points.displayPoint();
+//        points = pointsTable;
     }
 
     void displayPoints(){
-        for (Point p : pointsList){
-            p.displayPoint();
+        for (int i = 0; i < pointsNumber; i++) {
+            cout << i << " - " ;
+            points[i].displayPoint();
+        }
+    }
+    void displayPoints(int a){
+        for(Point k: pointsList){
+            k.displayPoint();
         }
     }
 
@@ -67,6 +97,15 @@ public:
             if (i == index) return p;
             i++;
         }
+    }
+
+    int computeCost(){
+        int cost = 0;
+        for (int i = 1; i < pointsNumber; i++){
+            cost += points[i-1].distP(points[i]);
+//            cout << cost << endl ;
+        }
+        return cost;
     }
 
     Point get(int index){
@@ -80,7 +119,12 @@ public:
 };
 
 class Simulator{
+public:
     float Temperature;
+
+    Simulator(float tmp){
+        Temperature = tmp;
+    }
 
 
     int Simulated_annealing(list<Point> points){
@@ -92,17 +136,9 @@ class Simulator{
 int main() {
     srand((unsigned) time(NULL));
     PointsList li = PointsList(100);
-    li.get(2).displayPoint();
-    li.set(2, Point());
-    li.get(2).displayPoint();
-//    li.displayPoints();
-//
-//    li.get(2).displayPoint();
-
-//    int* test1;
-//    int test2[3];
-//    test2[0] = 12;
-//    test1 = test2;
-//    cout << test1[0];
-
+    li.displayPoints();
+    cout << li.computeCost();
+    cout << rand();
+    cout << rand();
+    cout << rand();
 }
