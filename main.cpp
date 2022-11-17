@@ -3,7 +3,6 @@
 #include <cmath>
 
 #include <list>
-//#include <iterator>
 
 #include <bits/stdc++.h>
 
@@ -32,7 +31,8 @@ public:
     }
 
     void displayPoint(){
-        printf("Salut, je suis le point (%d, %d). Ma distance à la racine du repère est %d\n", x, y, rootdist);
+//        printf("Salut, je suis le point (%d, %d). Ma distance à la racine du repère est %d\n", x, y, rootdist);
+        printf("(%d, %d) ", x, y);
     }
 
 };
@@ -58,12 +58,10 @@ public:
             points[i] = p;
         }
         sort(points,points + 100, PointComparator());
-//        displayPoints();
     }
 
-    void displayPoints(){
+    void displayPath(){
         for (int i = 0; i < pointsNumber; i++) {
-            cout << i << " - " ;
             points[i].displayPoint();
         }
     }
@@ -83,6 +81,7 @@ public:
     void set(int index, Point new_p){
         points[index] =  new_p;
     }
+
 };
 
 class Simulator{
@@ -154,6 +153,11 @@ public:
         }
         return optValue;
     }
+
+    void displayResult(){
+        cout << "\n>>>> Chemin final" << endl;
+        pList.displayPath();
+    }
 };
 
 
@@ -164,6 +168,9 @@ int main() {
     PointsList li = PointsList();
     cout << "Initial cost " << li.computeCost() << endl;
     Simulator simulator = Simulator(li);
-    printf("Résultat optimisé : %d", simulator.Simulated_annealing(temp));
+    cout << "Initial path " << endl;
+    simulator.pList.displayPath();
+    printf("Résultat optimisé : %d\n", simulator.Simulated_annealing(temp));
+    simulator.displayResult();
     return 0;
 }
