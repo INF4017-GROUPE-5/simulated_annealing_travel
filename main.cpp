@@ -121,7 +121,7 @@ public:
         int randomIndex = (int) rand() % nbNeighbourhood ;
         int i = 0;
         for (Neighbourhood nbh : neighbourhoods){
-            if (i == randomIndex) return nbh;
+            if (i == randomIndex) return nbh;  // on retourne le voisinnage numero i
             i++;
         }
     }
@@ -140,21 +140,23 @@ public:
         pList.set(source, cache);
     }
 
+    // Récupération du cout de l'ensemble courant
     int getCost(){
         return pList.computeCost();
     }
-
+    // Implementation de l'algorithme de recuit simulé
     int Simulated_annealing(float tmp){
-        generateNeighbourhoods(10);
-        temperature = tmp;
-        int optValue = getCost();
+        generateNeighbourhoods(10); // On génère 10 voisinnages dans l'ensemble initialement trié
+        temperature = tmp; // On définit la température avec laquelle on va dérouler l'algorithme
+        int optValue = getCost();  // On évalue le cout de la configuration initiale
         while( temperature > 0.1 ){
-            Neighbourhood nbh = getRandomNeighbourhood();
-            neighbouringSwap(nbh);
+            Neighbourhood nbh = getRandomNeighbourhood(); // On choisi aléatoirement un voisinnage parmi ceux générés
+            neighbouringSwap(nbh); // On fait la permutation de deux points pris aléatoirement dans le voisinnage
 
             cout << "\ncurrent permutation" << endl;
-            pList.displayPath();
+            pList.displayPath();  // On affiche la permutation courante
 
+            // On prend le cout de l'itération courante et s'il est meilleur, on le sauvegarde
             int tester = getCost();
             if (tester < optValue) optValue = tester;
             temperature *= 0.9;
