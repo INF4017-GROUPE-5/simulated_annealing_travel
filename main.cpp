@@ -37,14 +37,16 @@ public:
 
 };
 
+//Operateur de comparaison utilisé pour faire le tri du tableau des points
 struct PointComparator{
     bool operator()(const Point & point1, const Point & point2){
         return point1.rootdist < point2.rootdist;
     }
 };
 
+//Classe contenant une permutation de points
 class PointsList{
-    Point points[100];
+    Point points[100]; // Ensemble de points de travail
 
 public:
     int pointsNumber = 100;
@@ -53,9 +55,11 @@ public:
 
         for (int i = 0; i < pointsNumber; i++){
             Point p;
-            p.randGen(pointsNumber);
+            p.randGen(pointsNumber); // affectation aléatoire des valeurs des coordonnées des points
             points[i] = p;
         }
+
+        // Tri des points générés aléatoirement sur la base de la distance à l'origine du repère : Point (0,0)
         sort(points,points + 100, PointComparator());
     }
 
@@ -141,7 +145,7 @@ public:
             Neighbourhood nbh = getRandomNeighbourhood();
             neighbouringSwap(nbh);
 
-            cout << "current permutation" << endl;
+            cout << "\ncurrent permutation" << endl;
             pList.displayPath();
 
             int tester = getCost();
