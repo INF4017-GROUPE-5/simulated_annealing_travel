@@ -56,23 +56,26 @@ public:
         for (int i = 0; i < pointsNumber; i++){
             Point p;
             p.randGen(pointsNumber); // affectation aléatoire des valeurs des coordonnées des points
-            points[i] = p;
+            points[i] = p; // ajout du point crée aléatoirement à l'ensemble de travail
         }
 
         // Tri des points générés aléatoirement sur la base de la distance à l'origine du repère : Point (0,0)
         sort(points,points + 100, PointComparator());
     }
 
+//    Affichage du chemin courant
     void displayPath(){
         for (int i = 0; i < pointsNumber; i++) {
             points[i].displayPoint();
         }
     }
 
+//    Calcul de la longeur du chemin courant
     int computeCost(){
         int cost = 0;
+        // On calcule la distance entre les points deux à deux
         for (int i = 1; i < pointsNumber; i++){
-            cost += points[i-1].distP(points[i]);
+            cost += points[i-1].distP(points[i]); // distance entre le point i-1 et le point i
         }
         return cost;
     }
