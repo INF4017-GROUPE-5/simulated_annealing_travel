@@ -31,7 +31,6 @@ public:
     }
 
     void displayPoint(){
-//        printf("Salut, je suis le point (%d, %d). Ma distance à la racine du repère est %d\n", x, y, rootdist);
         printf("(%d, %d) ", x, y);
     }
 
@@ -44,7 +43,6 @@ struct PointComparator{
 };
 
 class PointsList{
-    list<Point> pointsList;
     Point points[100];
 
 public:
@@ -98,16 +96,10 @@ public:
     // Fonction de permutation de deux éléments aléatoirement choisis dans un espacé donné
     void neighbouringSwap(Neighbourhood nbh){
         int dif = nbh._end - nbh._start;
-//        printf("range [%d,%d]\n", nbh._start, nbh._end);
-//        cout << "this is dif " << dif << endl;
         int vrand = (int) rand() % (dif);
-//        cout << "rand : " << vrand << endl;
         int source = vrand + nbh._start;
         vrand = (int) rand() % (dif);
-//        cout << "rand : " << vrand << endl;
         int dest = vrand + nbh._start;
-
-//        cout << "source : " << source << " dest : " << dest << endl;
 
         Point cache = pList.get(dest);
         pList.set(dest, pList.get(source));
@@ -144,9 +136,11 @@ public:
         generateNeighbourhoods(10);
         temperature = tmp;
         int optValue = getCost();
-        while( temperature > 0.1){
+        while( temperature > 0.1 ){
             Neighbourhood nbh = getRandomNeighbourhood();
             neighbouringSwap(nbh);
+            cout << "current permutation" << endl;
+            pList.displayPath();
             int tester = getCost();
             if (tester < optValue) optValue = tester;
             temperature *= 0.9;
@@ -163,14 +157,15 @@ public:
 
 
 int main() {
-    float temp = 10.0;
+    float temp = 40.0;
     srand((unsigned) time(NULL));
     PointsList li = PointsList();
     cout << "Initial cost " << li.computeCost() << endl;
     Simulator simulator = Simulator(li);
     cout << "Initial path " << endl;
     simulator.pList.displayPath();
-    printf("Résultat optimisé : %d\n", simulator.Simulated_annealing(temp));
+    printf("\n \nRésultat optimisé : %d\n", simulator.Simulated_annealing(temp));
     simulator.displayResult();
+
     return 0;
 }
