@@ -90,12 +90,13 @@ public:
 
 };
 
+// classe containant l'implementation de l'algorithme de simulated annealing
 class Simulator{
 public:
     float temperature;
-    PointsList pList;
-    int nbNeighbourhood;
-    list<Neighbourhood> neighbourhoods;
+    PointsList pList; // L'ensemble des points sur lequel on travaille
+    int nbNeighbourhood;  // Nombre de voisinnages de points utilisées
+    list<Neighbourhood> neighbourhoods;  // Ensemble des voisinnages de points
 
     Simulator( PointsList p){
         pList = p;
