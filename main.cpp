@@ -9,11 +9,6 @@
 
 using namespace std;
 
-struct sPoint{
-    int x;
-    int y;
-    int rootdist;
-};
 
 class Point{
 public:
@@ -25,9 +20,6 @@ public:
         x = (int) (rand() % pointsNumber);
         y = (int) (rand() % pointsNumber);
         rootdist = (int) sqrt(x*x + y*y);
-//        x = 1;
-//        y = 2;
-//        rootdist = (int) sqrt(x*x + y*y);
     }
 
     int distP(Point pB){
@@ -49,34 +41,20 @@ struct PointComparator{
 
 class PointsList{
     list<Point> pointsList;
-//    Point* points;
     Point points[100];
     int pointsNumber = 100;
 
 public:
 
-    PointsList(int pointsNumber){
-//        this->pointsNumber = pointsNumber;
-//        Point pointsTable[pointsNumber];
-
-//        for (int i = 0; i < pointsNumber; i++){
-//            Point p;
-//            p.randGen(pointsNumber);
-//            pointsList.push_back(p);
-//        }
-//        pointsList.sort(PointComparator());
-
+    PointsList(){
 
         for (int i = 0; i < pointsNumber; i++){
             Point p;
             p.randGen(pointsNumber);
             points[i] = p;
-//            points[i] = listGet(i);
         }
         sort(points,points + 100, PointComparator());
         displayPoints();
-//        points.displayPoint();
-//        points = pointsTable;
     }
 
     void displayPoints(){
@@ -85,25 +63,11 @@ public:
             points[i].displayPoint();
         }
     }
-    void displayPoints(int a){
-        for(Point k: pointsList){
-            k.displayPoint();
-        }
-    }
-
-    Point listGet(int index){
-        int i = 0;
-        for (Point p: pointsList){
-            if (i == index) return p;
-            i++;
-        }
-    }
 
     int computeCost(){
         int cost = 0;
         for (int i = 1; i < pointsNumber; i++){
             cost += points[i-1].distP(points[i]);
-//            cout << cost << endl ;
         }
         return cost;
     }
@@ -115,7 +79,6 @@ public:
     void set(int index, Point new_p){
         points[index] =  new_p;
     }
-
 };
 
 class Simulator{
@@ -135,10 +98,7 @@ public:
 
 int main() {
     srand((unsigned) time(NULL));
-    PointsList li = PointsList(100);
-    li.displayPoints();
+    PointsList li = PointsList();
+//    li.displayPoints();
     cout << li.computeCost();
-    cout << rand();
-    cout << rand();
-    cout << rand();
 }
