@@ -9,7 +9,10 @@
 
 using namespace std;
 
-struct neighbouring
+struct Neighbourhood{
+    int _start;
+    int _end;
+};
 
 class Point{
 public:
@@ -43,9 +46,9 @@ struct PointComparator{
 class PointsList{
     list<Point> pointsList;
     Point points[100];
-    int pointsNumber = 100;
 
 public:
+    int pointsNumber = 100;
 
     PointsList(){
 
@@ -84,41 +87,77 @@ public:
 
 class Simulator{
 public:
-    float Temperature;
+    float temperature;
     PointsList pList;
+    int nbNeighbourhood;
+    list<Neighbourhood> neighbourhoods;
 
-    Simulator(float tmp, PointsList p){
+    Simulator( PointsList p){
         pList = p;
-        Temperature = tmp;
     }
 
     // Fonction de permutation de deux éléments aléatoirement choisis dans un espacé donné
-    void neighbouringSwap(int _begin, int _end){
-        int source = (int) (rand() % (_end - _begin)) + _end;
-        int dest = (int) (rand() % (_end - _begin)) + _end;
+    void neighbouringSwap(Neighbourhood nbh){
+        int source = (int) (rand() % (nbh._end - nbh._start)) + nbh._end;
+        int dest = (int) (rand() % (nbh._end - nbh._start)) + nbh._end;
 
         Point cache = pList.get(dest);
         pList.set(dest, pList.get(source));
         pList.set(source, cache);
     }
 
+    Neighbourhood getRandomNeighbourhood(){
+        int randomIndex = (int) rand() % nbNeighbourhood ;
+        int i = 0;
+        for (Neighbourhood nbh : neighbourhoods){
+            if (i = randomIndex) return nbh;
+            i++;
+        }
+    }
+
+    // Géneration des voisinnages
+    void generateNeighbourhoods(int sizeNeighbourhoods){
+        int nb = 0;
+        cout << "points number " << pList.pointsNumber << endl;
+        for (int i = 0; i < pList.pointsNumber; i += sizeNeighbourhoods){
+            Neighbourhood nbh;
+            nbh._start = i;
+            nbh._end = i + sizeNeighbourhoods - 1;
+            neighbourhoods.push_back(nbh);
+            nb++;
+        }
+        printf("tested");
+        nbNeighbourhood = nb;
+        printf("tested");
+    }
+
     int getCost(){
         return pList.computeCost();
     }
 
-    int Simulated_annealing(){
-        neighbouringSwap(1, 10);
-        return 1;
+    int Simulated_annealing(float tmp){
+        generateNeighbourhoods(10);
+        temperature = tmp;
+        int optValue = getCost();
+        while( temperature > 0.1){
+            Neighbourhood nbh = getRandomNeighbourhood();
+//            neighbouringSwap(nbh);
+            int tester = getCost();
+            if (tester < optValue) optValue = tester;
+            temperature *= 0.9;
+        }
+        return optValue;
     }
 };
 
 
 
 int main() {
-    float temp = 400.0;
+    printf("tesd");
+    float temp = 10.0;
     srand((unsigned) time(NULL));
     PointsList li = PointsList();
-    Simulator simulator = Simulator(temp, li);
-
+    Simulator simulator = Simulator(li);
+    printf("Résultat optimisé : %d", simulator.Simulated_annealing(temp));
     return 0;
 }
