@@ -98,8 +98,17 @@ public:
 
     // Fonction de permutation de deux éléments aléatoirement choisis dans un espacé donné
     void neighbouringSwap(Neighbourhood nbh){
-        int source = (int) (rand() % (nbh._end - nbh._start)) + nbh._end;
-        int dest = (int) (rand() % (nbh._end - nbh._start)) + nbh._end;
+        int dif = nbh._end - nbh._start;
+//        printf("range [%d,%d]\n", nbh._start, nbh._end);
+//        cout << "this is dif " << dif << endl;
+        int vrand = (int) rand() % (dif);
+//        cout << "rand : " << vrand << endl;
+        int source = vrand + nbh._start;
+        vrand = (int) rand() % (dif);
+//        cout << "rand : " << vrand << endl;
+        int dest = vrand + nbh._start;
+
+//        cout << "source : " << source << " dest : " << dest << endl;
 
         Point cache = pList.get(dest);
         pList.set(dest, pList.get(source));
@@ -110,7 +119,7 @@ public:
         int randomIndex = (int) rand() % nbNeighbourhood ;
         int i = 0;
         for (Neighbourhood nbh : neighbourhoods){
-            if (i = randomIndex) return nbh;
+            if (i == randomIndex) return nbh;
             i++;
         }
     }
@@ -118,7 +127,6 @@ public:
     // Géneration des voisinnages
     void generateNeighbourhoods(int sizeNeighbourhoods){
         int nb = 0;
-        cout << "points number " << pList.pointsNumber << endl;
         for (int i = 0; i < pList.pointsNumber; i += sizeNeighbourhoods){
             Neighbourhood nbh;
             nbh._start = i;
@@ -126,9 +134,7 @@ public:
             neighbourhoods.push_back(nbh);
             nb++;
         }
-        printf("tested");
         nbNeighbourhood = nb;
-        printf("tested");
     }
 
     int getCost(){
@@ -141,7 +147,7 @@ public:
         int optValue = getCost();
         while( temperature > 0.1){
             Neighbourhood nbh = getRandomNeighbourhood();
-//            neighbouringSwap(nbh);
+            neighbouringSwap(nbh);
             int tester = getCost();
             if (tester < optValue) optValue = tester;
             temperature *= 0.9;
@@ -153,10 +159,10 @@ public:
 
 
 int main() {
-    printf("tesd");
     float temp = 10.0;
     srand((unsigned) time(NULL));
     PointsList li = PointsList();
+    cout << "Initial cost " << li.computeCost() << endl;
     Simulator simulator = Simulator(li);
     printf("Résultat optimisé : %d", simulator.Simulated_annealing(temp));
     return 0;
